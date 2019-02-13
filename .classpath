@@ -2,5 +2,8 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="P:/Java 2018-2019/School/TerminalHangman/lib/aio.jar"/>
+	<classpathentry kind="lib" path="P:/Java 2018-2019/School/TerminalHangman/lib/ansi.jar"/>
+	<classpathentry kind="lib" path="P:/Java 2018-2019/School/TerminalHangman/lib/jansi-1.17.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

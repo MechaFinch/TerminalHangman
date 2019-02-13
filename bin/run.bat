@@ -1,2 +1,0 @@
-java game.TerminalHangman
-pause
