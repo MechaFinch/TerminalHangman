@@ -1,3 +1,3 @@
 @echo off
-java -cp "lib/*;bin" game.TerminalHangman
+ansirun java -cp "lib/*;bin" game.TerminalHangman
 pause
