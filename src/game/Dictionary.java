@@ -36,14 +36,7 @@ public class Dictionary {
 	public Dictionary(File f) throws IOException {
 		this();
 		
-		BufferedReader read = new BufferedReader(new FileReader(f));
-		String s = "";
-		
-		while((s = read.readLine()) != null) {
-			words.add(s);
-		}
-		
-		read.close();
+		load(f);
 	}
 	
 	/**
@@ -55,6 +48,33 @@ public class Dictionary {
 	 */
 	public Dictionary(String filePath) throws IOException {
 		this(new File(filePath));
+	}
+	
+	/**
+	 * Adds words from a file
+	 * 
+	 * @param f The file to load from
+	 * @throws IOException
+	 */
+	public void load(File f) throws IOException {
+		BufferedReader read = new BufferedReader(new FileReader(f));
+		String s = "";
+		
+		while((s = read.readLine()) != null) {
+			words.add(s);
+		}
+		
+		read.close();
+	}
+	
+	/**
+	 * Adds words from a file
+	 * 
+	 * @param filePath The path of the file to load from
+	 * @throws IOException
+	 */
+	public void load(String filePath) throws IOException {
+		load(new File(filePath));
 	}
 	
 	/**
