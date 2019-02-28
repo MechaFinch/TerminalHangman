@@ -2,6 +2,9 @@ package game;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import aio.AIO;
 import ansi.ANSI;
@@ -77,6 +80,10 @@ public class TerminalHangman {
 						showHelp(command);
 						break;
 					
+					case "play":
+						startGame(command);
+						break;
+					
 					default:
 						ANSI.print(ANSI.foreground.RED);
 						System.out.println("Command invalid.");
@@ -86,6 +93,14 @@ public class TerminalHangman {
 		
 		ANSI.print(ANSI.attribute.OFF + ANSI.foreground.CYAN);
 		System.out.println("goodbye");
+	}
+	
+	/**
+	 * Starts a game of Hangman
+	 * 
+	 * @param command Command instance
+	 */
+	void startGame(String[] command) {
 	}
 	
 	/**
@@ -270,15 +285,13 @@ public class TerminalHangman {
 	void showHelp(String[] command) {
 		//List commands
 		if(command.length == 1) {
-			System.out.println("Commands:" +
-							   "\n\nclear" +
-							   "\nload" +
-							   "\nview" +
-							   "\nadd" +
-							   "\nremove" +
-							   "\nlist" +
-							   "\nhelp" +
-							   "\nexit");
+			System.out.println("Commands:");
+			List<String> coms = Arrays.asList("clear", "load", "view", "add", "remove", "list", "help", "exit", "play");
+			Collections.sort(coms);
+			
+			for(String s : coms) {
+				System.out.println(s);
+			}
 		} else { //Show command description and usage
 			showUsage(command[1]);
 		}
@@ -334,6 +347,10 @@ public class TerminalHangman {
 				System.out.println("help [<command>]" +
 								   "\nLists commands or shows the usage of the given command" +
 								   "\n\tcommand\tThe command to explain");
+				break;
+			
+			case "play":
+				//TODO: placeholder
 				break;
 			
 			case "exit":
