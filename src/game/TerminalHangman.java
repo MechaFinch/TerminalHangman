@@ -28,7 +28,7 @@ public class TerminalHangman {
 	/**
 	 * It's main, but better!!!
 	 */
-	void run() {
+	protected void run() {
 		//Runs the main menu
 		done:
 		while(true) {
@@ -100,7 +100,8 @@ public class TerminalHangman {
 	 * 
 	 * @param command Command instance
 	 */
-	void startGame(String[] command) {
+	protected void startGame(String[] command) {
+		new HangmanGame(command, this);
 	}
 	
 	/**
@@ -108,7 +109,7 @@ public class TerminalHangman {
 	 * 
 	 * @param command Command instance
 	 */
-	void removeWord(String[] command) {
+	protected void removeWord(String[] command) {
 		if(command.length < 2) {
 			ANSI.print(ANSI.foreground.RED);
 			System.out.println("Invalid use.");
@@ -130,7 +131,7 @@ public class TerminalHangman {
 	 * 
 	 * @param command Command instance
 	 */
-	void addWord(String[] command) {
+	protected void addWord(String[] command) {
 		if(command.length < 2) {
 			ANSI.print(ANSI.foreground.RED);
 			System.out.println("Invalid use.");
@@ -154,7 +155,7 @@ public class TerminalHangman {
 	 * @param command Command instance
 	 * @return The assembled string
 	 */
-	String assembleWord(String[] command, int start) {
+	protected String assembleWord(String[] command, int start) {
 		String w = "";
 		
 		for(; start < command.length; start++) {
@@ -167,7 +168,7 @@ public class TerminalHangman {
 	/**
 	 * Shows things such as player data or dictionaries
 	 */
-	void view(String[] command) {
+	protected void view(String[] command) {
 		switch((command.length == 2) ? command[1] : "") {
 			case "player":
 			case "p":
@@ -199,7 +200,7 @@ public class TerminalHangman {
 	 * 
 	 * @param command The command this was run with
 	 */
-	void load(String[] command) {
+	protected void load(String[] command) {
 		switch((command.length == 3 || command.length == 4) ? command[1] : "") {
 			case "player":
 			case "p":
@@ -231,7 +232,7 @@ public class TerminalHangman {
 	 * 
 	 * @param filePath The file to load from
 	 */
-	void loadPlayerData(String filePath) {
+	protected void loadPlayerData(String filePath) {
 		try {
 			player = new PlayerData(filePath, true);
 		} catch (IOException e) {
@@ -255,7 +256,7 @@ public class TerminalHangman {
 	 * @param filePath The file to load from
 	 * @param append Whether or not to append the loaded dictionary
 	 */
-	void loadDictionary(String filePath, boolean append) {
+	protected boolean loadDictionary(String filePath, boolean append) {
 		try {
 			if(append) {
 				dictionary.load(filePath);
@@ -270,11 +271,12 @@ public class TerminalHangman {
 				e.printStackTrace();
 			}
 			
-			return;
+			return false;
 		}
 		
 		ANSI.print(ANSI.foreground.CYAN);
 		System.out.println("Done.");
+		return true;
 	}
 	
 	/**
@@ -282,7 +284,7 @@ public class TerminalHangman {
 	 * 
 	 * @param command Command instance
 	 */
-	void showHelp(String[] command) {
+	protected void showHelp(String[] command) {
 		//List commands
 		if(command.length == 1) {
 			System.out.println("Commands:");
@@ -302,7 +304,7 @@ public class TerminalHangman {
 	 * 
 	 * @param commandName The command to explain
 	 */
-	void showUsage(String commandName) {
+	public void showUsage(String commandName) {
 		ANSI.print(ANSI.foreground.CYAN);
 		System.out.println("Usage:");
 		ANSI.print(ANSI.foreground.WHITE);
@@ -350,7 +352,11 @@ public class TerminalHangman {
 				break;
 			
 			case "play":
-				//TODO: placeholder
+				System.out.println("play [options]" +
+								   "\nStarts a game of Hangman" +
+								   "\n\toptions:" +
+								   "\n\t\t-word\t\tRequest a word before playing. Incompatible with '-dictionary'" +
+								   "\n\t\t-dictionary [-a] <dictionary>\tLoad a dictionary before playing, acts like 'load'. Incompatible with '-word'");
 				break;
 			
 			case "exit":
