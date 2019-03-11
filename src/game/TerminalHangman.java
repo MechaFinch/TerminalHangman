@@ -57,6 +57,10 @@ public class TerminalHangman {
 						load(command);
 						break;
 					
+					case "save":
+						save(command);
+						break;
+					
 					case "view":
 						view(command);
 						break;
@@ -111,8 +115,7 @@ public class TerminalHangman {
 	 */
 	protected void removeWord(String[] command) {
 		if(command.length < 2) {
-			ANSI.print(ANSI.foreground.RED);
-			System.out.println("Invalid use.");
+			printInvalid();
 			showUsage("remove");
 		} else {
 			String s = assembleWord(command, 1);
@@ -133,8 +136,7 @@ public class TerminalHangman {
 	 */
 	protected void addWord(String[] command) {
 		if(command.length < 2) {
-			ANSI.print(ANSI.foreground.RED);
-			System.out.println("Invalid use.");
+			printInvalid();
 			showUsage("add");
 		} else {
 			String s = assembleWord(command, 1);
@@ -159,10 +161,10 @@ public class TerminalHangman {
 		String w = "";
 		
 		for(; start < command.length; start++) {
-			w += command[start];
+			w += command[start] + " ";
 		}
 		
-		return w;
+		return w.substring(0, w.length() - 1);
 	}
 	
 	/**
@@ -189,8 +191,7 @@ public class TerminalHangman {
 				break;
 			
 			default:
-				ANSI.print(ANSI.foreground.RED);
-				System.out.println("Invalid use.");
+				printInvalid();
 				showUsage("view");
 		}
 	}
@@ -201,29 +202,60 @@ public class TerminalHangman {
 	 * @param command The command this was run with
 	 */
 	protected void load(String[] command) {
-		switch((command.length == 3 || command.length == 4) ? command[1] : "") {
+		switch((command.length > 1 && command.length < 5) ? command[1] : "") {
 			case "player":
 			case "p":
-				loadPlayerData(command[2]);
+				if(command.length == 3) {
+					loadPlayerData(command[2]);
+				} else {
+					printInvalid();
+					showUsage("load");
+				}
 				break;
 			
 			case "dictionary":
 			case "d":
 				if(command.length == 3) {
 					loadDictionary(command[2], false);
-				} else if(command.length == 4 && command[2].toLowerCase().equals("-a:")) {
+				} else if(command.length == 4 && command[2].toLowerCase().equals("-a")) {
 					loadDictionary(command[3], true);
 				} else {
-					ANSI.print(ANSI.foreground.RED);
-					System.out.println("Invalid use.");
+					printInvalid();
+					showUsage("load");
+				}
+				break;
+			
+			case "default":
+			case "def":
+				if(command.length == 2) {
+					loadDictionary("dictionaries/default.dict", false);
+				} else if(command.length == 3 && command[2].toLowerCase().equals("-a")) {
+					loadDictionary("dictionaries/default.dict", true);
+				} else {
+					printInvalid();
 					showUsage("load");
 				}
 				break;
 			
 			default:
-				ANSI.print(ANSI.foreground.RED);
-				System.out.println("Invalid use.");
+				printInvalid();
 				showUsage("load");
+		}
+	}
+	
+	/**
+	 * Saves things, from playerdata to dictionaries
+	 * 
+	 * @param command Command instance
+	 */
+	protected void save(String[] command) {
+		switch((command.length == 2 || command.length == 3) ? command[1] : "") {
+			case "":
+				break;
+			
+			default:
+				printInvalid();
+				showUsage("save");
 		}
 	}
 	
@@ -318,10 +350,11 @@ public class TerminalHangman {
 				break;
 			
 			case "load":
-				System.out.println("load {player | dictionary [-a]} <directory>" +
+				System.out.println("load {player | {dictionary | default} [-a]} <directory>" +
 								   "\nLoad a player's data or a dictionary" +
 								   "\n\tplayer\t\tLoad a player's data" +
 								   "\n\tdictionary\tLoad a dictionary of words" +
+								   "\n\tdefault\tLoad default dictionary" +
 								   "\n\t-a\t\t'Append' flag - Append loaded dictionary to current dictionary");
 				break;
 			
@@ -367,5 +400,13 @@ public class TerminalHangman {
 				ANSI.print(ANSI.foreground.RED);
 				System.out.println("Unknown command");
 		}
+	}
+	
+	/**
+	 * Prints the 'invlaid use' message
+	 */
+	public void printInvalid() {
+		ANSI.print(ANSI.foreground.RED);
+		System.out.println("Invalid use.");
 	}
 }

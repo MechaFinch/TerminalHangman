@@ -3,7 +3,9 @@ package playerdata;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Contains a player's data
@@ -11,7 +13,8 @@ import java.io.IOException;
  * @author Alex Pickering
  */
 public class PlayerData {
-	String name;
+	String name,
+		   filePath;
 	
 	int wins,
 		losses,
@@ -36,6 +39,7 @@ public class PlayerData {
 		wins = 0;
 		losses = 0;
 		plays = 0;
+		filePath = name;
 	}
 	
 	/**
@@ -47,6 +51,8 @@ public class PlayerData {
 	public PlayerData(File f) throws IOException {
 		BufferedReader read = new BufferedReader(new FileReader(f));
 		String[] sa = new String[4];
+		
+		filePath = f.getPath();
 		
 		for(int i = 0; i < sa.length; i++) {
 			sa[i] = read.readLine();
@@ -72,6 +78,22 @@ public class PlayerData {
 		
 		//Not dealing with factories xd
 		if(!load) throw new IllegalArgumentException("Just use the one without the boolean mate");
+	}
+	
+	/**
+	 * Saves the player's data
+	 * 
+	 * @throws IOException
+	 */
+	public void save() throws IOException {
+		PrintWriter pw = new PrintWriter(new FileWriter(new File(filePath)));
+		
+		pw.println(name);
+		pw.println(wins);
+		pw.println(losses);
+		pw.println(plays);
+		
+		pw.close();
 	}
 	
 	/**
@@ -108,5 +130,30 @@ public class PlayerData {
 	 */
 	public int getLosses() {
 		return losses;
+	}
+	
+	/**
+	 * Sets the name of the player
+	 * 
+	 * @param n The new name
+	 */
+	public void setName(String n) {
+		name = n;
+	}
+	
+	/**
+	 * Adds a win and play
+	 */
+	public void addWin() {
+		wins++;
+		plays++;
+	}
+	
+	/**
+	 * Adds a loss and play
+	 */
+	public void addLoss() {
+		losses++;
+		plays++;
 	}
 }

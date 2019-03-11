@@ -3,7 +3,9 @@ package game;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -78,6 +80,31 @@ public class Dictionary {
 	}
 	
 	/**
+	 * Saves the dictionary to a file
+	 * 
+	 * @param f The file to save to
+	 * @throws IOException
+	 */
+	public void save(File f) throws IOException {
+		PrintWriter pw = new PrintWriter(new FileWriter(f));
+		
+		for(String s : words) {
+			pw.println(s);
+		}
+		
+		pw.close();
+	}
+	
+	/**
+	 * Saves the dictionary to a file
+	 * @param filePath The path of the file to save to
+	 * @throws IOException
+	 */
+	public void save(String filePath) throws IOException {
+		save(new File(filePath));
+	}
+	
+	/**
 	 * Adds a word to the dictionary
 	 * 
 	 * @param s The word to add
@@ -121,6 +148,7 @@ public class Dictionary {
 	 * @return A random word
 	 */
 	public String getRandomWord() {
+		if(words.size() == 0) return null;
 		return words.get(rand.nextInt(words.size()));
 	}
 }
